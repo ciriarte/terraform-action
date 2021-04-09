@@ -20,6 +20,12 @@ inputs:
   terraform_source:
     description: "The relative path of the directory containing your Terraform configuration files. For example: if your .tf files are stored in a git repo called prod-config under a directory terraform-configs, you could do a get: prod-config in your pipeline with terraform_source: prod-config/terraform-configs/ as the source."
     required: true
+  backend_config:
+    description: "JSON object with the corresponding backend config"
+    required: true
+  backend_type:
+    description: "We only support s3 and gcs for now"
+    required: true
 
 runs:
   using: 'docker'
@@ -28,3 +34,5 @@ runs:
     - ${{ inputs.template_path }}
     - ${{ inputs.env_name }}
     - ${{ inputs.terraform_source }}
+    - ${{ inputs.backend_type }}
+    - ${{ inputs.backend_config }}

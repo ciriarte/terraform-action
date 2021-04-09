@@ -1,0 +1,21 @@
+name: "Terraform Apply"
+description: "terraform apply"
+inputs:
+  env_name:
+    description: "Name of the environment to manage, e.g. staging. A Terraform workspace will be created with this name."
+    required: false
+  delete_on_failure:
+    description: "If true, the resource will run terraform destroy if terraform apply returns an error."
+    required: false
+    default: "false"
+  env:
+    description: "Similar to vars, this collection of key-value pairs can be used to pass environment variables to Terraform, e.g. 'AWS_ACCESS_KEY_ID'."
+    required: false
+  private_key:
+    description: "An SSH key used to fetch modules, e.g. private GitHub repos."
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.env-name }}

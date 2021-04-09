@@ -1,7 +1,7 @@
 name: "Terraform Apply"
 description: "terraform apply"
 inputs:
-  path:
+  template_path:
     description: "Path to terraform template"
     required: true
   env_name:
@@ -25,6 +25,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.path }}
+    - ${{ inputs.template_path }}
     - ${{ inputs.env_name }}
     - ${{ inputs.terraform_source }}

@@ -11,3 +11,5 @@ jobs:
 
     - name: "Terraform Apply"
       uses: ./
+      with:
+        terraform_source: alfonsof/terraform-google-cloud-examples/blob/master/code/01-hello-world/

@@ -1,7 +1,14 @@
 #! /usr/bin/env bash
 
-echo "Hello $1"
-time=$(date)
-echo "::set-output name=time::$time"
+PATH=$1
+ENV_NAME=$2
+TERRAFORM_SOURCE=$3
 
-/opt/resource/out
+/opt/resource/out "$PATH" <<JSON
+{
+  "params": {
+    "env_name": $ENV_NAME
+    "terraform_source": $TERRAFORM_SOURCE,
+  }
+}
+JSON

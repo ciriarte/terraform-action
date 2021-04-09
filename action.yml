@@ -14,8 +14,14 @@ inputs:
   private_key:
     description: "An SSH key used to fetch modules, e.g. private GitHub repos."
     required: false
+  terraform_source:
+    description: "The relative path of the directory containing your Terraform configuration files. For example: if your .tf files are stored in a git repo called prod-config under a directory terraform-configs, you could do a get: prod-config in your pipeline with terraform_source: prod-config/terraform-configs/ as the source."
+    required: true
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
+    - ${{ inputs.path }}
     - ${{ inputs.env-name }}
+    - ${{ inputs.terraform_source }}

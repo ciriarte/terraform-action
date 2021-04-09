@@ -9,12 +9,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Fetch Terraform Templates
+      uses: actions/checkout@v2
+      with:
+        repository: "alfonsof/terraform-google-cloud-examples"
+        path: terraforming-repo
+
     - name: "Terraform Apply"
       uses: ciriarte/terraform-actions@main
       with:
         env_name: "cutekoala"
         template_path: "./"
-        terraform_source: "alfonsof/terraform-google-cloud-examples/blob/master/code/01-hello-world/"
+        terraform_source: "terraforming-repo"
         backend_type: s3
         backend_config: ${{ secrets.BACKEND_CONFIG }}
 

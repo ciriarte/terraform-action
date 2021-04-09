@@ -10,10 +10,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: "Terraform Apply"
-      uses: ./
+      uses: ciriarte/terraform-actions@main
       with:
         env_name: "cutekoala"
         template_path: "./"
         terraform_source: "alfonsof/terraform-google-cloud-examples/blob/master/code/01-hello-world/"
         backend_type: s3
         backend_config: ${{ secrets.BACKEND_CONFIG }}
+
+    - name: "TEST"
+      run: echo "Blah"

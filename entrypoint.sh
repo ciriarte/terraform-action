@@ -13,8 +13,10 @@ BACKEND_CONFIG=$5
     "terraform_source": "$TERRAFORM_SOURCE"
   },
   "source": {
-    "backend_type": "$BACKEND_TYPE",
-    "backend_config": $BACKEND_CONFIG
+    "storage": {
+      "backend_type": "$BACKEND_TYPE",
+      "backend_config": $BACKEND_CONFIG
+    }
   }
 }
 JSON

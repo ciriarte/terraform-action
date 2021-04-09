@@ -11,8 +11,8 @@ echo $TERRAFORM_SOURCE
 /opt/resource/out "$TEMPLATE_PATH" <<JSON
 {
   "params": {
-    "env_name": $ENV_NAME,
-    "terraform_source": $TERRAFORM_SOURCE
+    "env_name": "$ENV_NAME",
+    "terraform_source": "$TERRAFORM_SOURCE"
   }
 }
 JSON

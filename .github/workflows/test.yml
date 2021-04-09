@@ -12,6 +12,6 @@ jobs:
     - name: "Terraform Apply"
       uses: ./
       with:
-        env_name: cutekoala
-        template_path: ./
-        terraform_source: alfonsof/terraform-google-cloud-examples/blob/master/code/01-hello-world/
+        env_name: "cutekoala"
+        template_path: "./"
+        terraform_source: "alfonsof/terraform-google-cloud-examples/blob/master/code/01-hello-world/"

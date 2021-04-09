@@ -12,7 +12,7 @@ BACKEND_CONFIG=$5
     "env_name": "$ENV_NAME",
     "terraform_source": "$TERRAFORM_SOURCE",
     "backend_type": "$BACKEND_TYPE",
-    "backend_config": $BACKEND_CONFIG
+    "backend_config": "bleh"
   },
 }
 JSON

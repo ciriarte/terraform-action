@@ -10,7 +10,9 @@ BACKEND_CONFIG=$5
 {
   "params": {
     "env_name": "$ENV_NAME",
-    "terraform_source": "$TERRAFORM_SOURCE",
+    "terraform_source": "$TERRAFORM_SOURCE"
+  },
+  "source": {
     "backend_type": "$BACKEND_TYPE",
     "backend_config": $BACKEND_CONFIG
   }

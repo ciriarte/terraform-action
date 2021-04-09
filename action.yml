@@ -1,6 +1,9 @@
 name: "Terraform Apply"
 description: "terraform apply"
 inputs:
+  path:
+    description: "Path to terraform template"
+    required: true
   env_name:
     description: "Name of the environment to manage, e.g. staging. A Terraform workspace will be created with this name."
     required: false

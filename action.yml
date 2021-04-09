@@ -23,5 +23,5 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.path }}
-    - ${{ inputs.env-name }}
+    - ${{ inputs.env_name }}
     - ${{ inputs.terraform_source }}

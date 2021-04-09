@@ -7,8 +7,8 @@ TERRAFORM_SOURCE=$3
 /opt/resource/out "$PATH" <<JSON
 {
   "params": {
-    "env_name": $ENV_NAME
-    "terraform_source": $TERRAFORM_SOURCE,
+    "env_name": $ENV_NAME,
+    "terraform_source": $TERRAFORM_SOURCE
   }
 }
 JSON

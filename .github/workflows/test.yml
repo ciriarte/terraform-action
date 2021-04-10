@@ -19,7 +19,6 @@ jobs:
       uses: ciriarte/terraform-actions@main
       with:
         env_name: "cutekoala"
-        template_path: "./"
         terraform_source: "terraforming-repo"
         backend_type: s3
         backend_config: ${{ secrets.BACKEND_CONFIG }}

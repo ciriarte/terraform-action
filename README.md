@@ -34,7 +34,6 @@ It is meant to ease portability across Github Actions and Concourse Pipelines.
   uses: ciriarte/terraform-actions@main
   with:
     env_name: "cutekoala"
-    template_path: "./"
     terraform_source: "terraforming-repo"
     backend_type: s3
     backend_config: ${{ secrets.BACKEND_CONFIG }}

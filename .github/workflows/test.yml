@@ -22,6 +22,3 @@ jobs:
         terraform_source: "terraforming-repo"
         backend_type: s3
         backend_config: ${{ secrets.BACKEND_CONFIG }}
-
-    - name: "TEST"
-      run: echo "Blah"

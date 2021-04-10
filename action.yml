@@ -18,7 +18,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - .
     - ${{ inputs.env_name }}
     - ${{ inputs.terraform_source }}
     - ${{ inputs.backend_type }}

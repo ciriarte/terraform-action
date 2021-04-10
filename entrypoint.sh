@@ -1,12 +1,11 @@
 #! /usr/bin/env bash
 
-TEMPLATE_PATH=$1
-ENV_NAME=$2
-TERRAFORM_SOURCE=$3
-BACKEND_TYPE=$4
-BACKEND_CONFIG=$5
+ENV_NAME=$1
+TERRAFORM_SOURCE=$2
+BACKEND_TYPE=$3
+BACKEND_CONFIG=$4
 
-/opt/resource/out "$TEMPLATE_PATH" <<JSON
+/opt/resource/out "$PWD" <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",

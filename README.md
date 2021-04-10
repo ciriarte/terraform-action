@@ -1,4 +1,4 @@
-# Terraform Actions
+# Terraform Action
 
 This project is a wrapper on Lyle Franklin's excellent terraform resource for Concourse.
 It is meant to ease portability across Github Actions and Concourse Pipelines.

@@ -2,7 +2,7 @@ name: "Terraform Resource Action"
 branding:
   icon: aperture
   color: orange
-description: "This project is a wrapper on Lyle Franklin's excellent terraform resource for Concourse. It is meant to ease portability across Github Actions and Concourse Pipelines."
+description: "Terraform resource port from Concourse. It is meant to ease portability across Github Actions and Concourse Pipelines."
 inputs:
   env_name:
     description: "Name of the environment to manage, e.g. staging. A Terraform workspace will be created with this name."

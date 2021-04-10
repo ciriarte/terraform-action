@@ -1,6 +1,10 @@
 name: "Terraform Apply"
 description: "terraform apply"
 inputs:
+  workspace:
+    description: "Path to workspace"
+    required: false
+    default: ${{ github.workspace }}
   env_name:
     description: "Name of the environment to manage, e.g. staging. A Terraform workspace will be created with this name."
     required: false
@@ -18,7 +22,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ github.workspace }}
+    - ${{ inputs.workspace }}
     - ${{ inputs.env_name }}
     - ${{ inputs.terraform_source }}
     - ${{ inputs.backend_type }}

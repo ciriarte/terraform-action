@@ -13,12 +13,8 @@ cat <<JSON
   "params": {
     "env_name": "$ENV_NAME",
     "terraform_source": "$TERRAFORM_SOURCE",
-    "var_files": [
-      $VAR_FILES
-    ],
-    "override_files": [
-      $OVERRIDE_FILES
-    ],
+    "var_files": $VAR_FILES,
+    "override_files": $OVERRIDE_FILES,
     "delete_on_failure": "$DELETE_ON_FAILURE",
     "vars": $VARS
   },

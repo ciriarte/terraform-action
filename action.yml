@@ -10,12 +10,21 @@ inputs:
   terraform_source:
     description: "The relative path of the directory containing your Terraform configuration files. For example: if your .tf files are stored in a git repo called prod-config under a directory terraform-configs, you could do a get: prod-config in your pipeline with terraform_source: prod-config/terraform-configs/ as the source."
     required: true
-  backend_config:
-    description: "JSON object with the corresponding backend config"
+  storage:
+    description: "YAML object with storage config"
     required: true
-  backend_type:
-    description: "We only support s3 and gcs for now"
-    required: true
+  var_files:
+    description: "A list of files containing Terraform input variables. These files can be in YAML or JSON format, or HCL if the filename ends in .tfvars"
+    required: false
+  override_files:
+    description: "A list of files to copy into the terraform_source directory. Override files must follow conventions outlined here such as file names ending in _override.tf"
+    required: false
+  delete_on_failure:
+    description: "If true, the resource will run terraform destroy if terraform apply returns an error."
+    required: false
+  vars:
+    description: "A collection of Terraform input variables. These are typically used to specify credentials or override default module values. See Terraform Input Variables for more details."
+    required: false
 
 runs:
   using: 'docker'
@@ -23,5 +32,8 @@ runs:
   args:
     - ${{ inputs.env_name }}
     - ${{ inputs.terraform_source }}
-    - ${{ inputs.backend_type }}
-    - ${{ inputs.backend_config }}
+    - ${{ inputs.storage }}
+    - ${{ inputs.var_files }}
+    - ${{ inputs.override_files }}
+    - ${{ inputs.delete_on_failure }}
+    - ${{ inputs.vars }}

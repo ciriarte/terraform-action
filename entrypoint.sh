@@ -2,18 +2,28 @@
 
 ENV_NAME=$1
 TERRAFORM_SOURCE=$2
-BACKEND_TYPE=$3
-BACKEND_CONFIG=$4
+STORAGE=$3
+VAR_FILES=$4
+OVERRIDE_FILES=$5
+DELETE_ON_FAILURE=$6
+VARS=$7
 
-/opt/resource/out "$PWD" <<JSON
+cat > test.json <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",
-    "terraform_source": "$TERRAFORM_SOURCE"
+    "terraform_source": "$TERRAFORM_SOURCE",
+    "var_files": [
+      $VAR_FILES
+    ],
+    "override_files": [
+      $OVERRIDE_FILES
+    ],
+    "delete_on_failure": "$DELETE_ON_FAILURE",
+    "vars": $VARS
   },
   "source": {
-    "backend_type": "$BACKEND_TYPE",
-    "backend_config": $BACKEND_CONFIG
+    "storage": $STORAGE
   }
 }
 JSON

@@ -19,6 +19,9 @@ jobs:
       uses: ciriarte/terraform-actions@main
       with:
         env_name: "cutekoala"
-        terraform_source: "terraforming-repo"
-        backend_type: s3
-        backend_config: ${{ secrets.BACKEND_CONFIG }}
+        terraform_source: "terraforming-repo/subdir"
+        storage: '{ "bucket": "s3", "bucket_path": "gcp/pull-pullrequest/123", "access_key_id": "ACCESS_KEY", "secret_access_key": "SECRET_KEY", "region": "us-west-1" }'
+        vars: '{ "global_lb": 0, "iso_seg_with_firewalls": true, "ssl_ca_cert": "((delivery_credhub_releng_ca.certificate))", "ssl_ca_private_key": "((delivery_credhub_releng_ca.private_key))", "isolation_segment": true, "iso_seg_ssl_ca_cert": "((delivery_credhub_releng_ca.certificate))", "iso_seg_ssl_ca_private_key": "((delivery_credhub_releng_ca.private_key))" }'
+        var_files: '[ "var/vars.tf" ]'
+        override_files: '[ "pcf-releng-ci/terraform/terraforming-gcp-overrides/outputs_override.tf" ]'
+        delete_on_failure: true

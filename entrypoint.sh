@@ -8,7 +8,7 @@ OVERRIDE_FILES=$5
 DELETE_ON_FAILURE=$6
 VARS=$7
 
-cat <<JSON
+/opt/resource/out "$PWD" <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",

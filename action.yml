@@ -10,8 +10,8 @@ inputs:
   terraform_source:
     description: "The relative path of the directory containing your Terraform configuration files. For example: if your .tf files are stored in a git repo called prod-config under a directory terraform-configs, you could do a get: prod-config in your pipeline with terraform_source: prod-config/terraform-configs/ as the source."
     required: true
-  storage:
-    description: "YAML object with storage config"
+  source:
+    description: "JSON object with backend config"
     required: true
   var_files:
     description: "A list of files containing Terraform input variables. These files can be in YAML or JSON format, or HCL if the filename ends in .tfvars"
@@ -32,7 +32,7 @@ runs:
   args:
     - ${{ inputs.env_name }}
     - ${{ inputs.terraform_source }}
-    - ${{ inputs.storage }}
+    - ${{ inputs.source }}
     - ${{ inputs.var_files }}
     - ${{ inputs.override_files }}
     - ${{ inputs.delete_on_failure }}

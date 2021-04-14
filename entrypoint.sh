@@ -2,7 +2,7 @@
 
 ENV_NAME=$1
 TERRAFORM_SOURCE=$2
-STORAGE=$3
+SOURCE=$3
 VAR_FILES=$4
 OVERRIDE_FILES=$5
 DELETE_ON_FAILURE=$6
@@ -18,8 +18,6 @@ VARS=$7
     "delete_on_failure": $DELETE_ON_FAILURE,
     "vars": $VARS
   },
-  "source": {
-    "storage": $STORAGE
-  }
+  "source": $SOURCE
 }
 JSON

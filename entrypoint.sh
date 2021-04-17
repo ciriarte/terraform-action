@@ -30,7 +30,7 @@ cat /opt/resource/in "$PWD" <<JSON
 {
   "version": $VERSION
   "params": {
-    "env_name": "$ENV_NAME",
+    "env_name": "$ENV_NAME"
   },
   "source": $SOURCE
 }
@@ -40,7 +40,7 @@ JSON
 {
   "version": $VERSION
   "params": {
-    "env_name": "$ENV_NAME",
+    "env_name": "$ENV_NAME"
   },
   "source": $SOURCE
 }

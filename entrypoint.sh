@@ -28,7 +28,7 @@ VERSION=$(jq -r .version "${tmp_dir}/check")
 
 cat <<JSON
 {
-  "version": $VERSION
+  "version": $VERSION,
   "params": {
     "env_name": "$ENV_NAME"
   },
@@ -38,7 +38,7 @@ JSON
 
 /opt/resource/in "$PWD" <<JSON
 {
-  "version": $VERSION
+  "version": $VERSION,
   "params": {
     "env_name": "$ENV_NAME"
   },

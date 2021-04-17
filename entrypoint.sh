@@ -24,7 +24,7 @@ tmp_dir=$(mktemp -d)
 }
 JSON
 
-VERSION=$(jq .version "${tmp_dir}/check")
+VERSION=$(jq -r .version "${tmp_dir}/check")
 
 /opt/resource/in "$PWD" <<JSON
 {

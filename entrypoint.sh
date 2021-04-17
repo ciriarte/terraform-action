@@ -26,6 +26,16 @@ JSON
 
 VERSION=$(jq -r .version "${tmp_dir}/check")
 
+cat /opt/resource/in "$PWD" <<JSON
+{
+  "version": $VERSION
+  "params": {
+    "env_name": "$ENV_NAME",
+  },
+  "source": $SOURCE
+}
+JSON
+
 /opt/resource/in "$PWD" <<JSON
 {
   "version": $VERSION

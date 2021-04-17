@@ -25,6 +25,9 @@ inputs:
   vars:
     description: "A collection of Terraform input variables. These are typically used to specify credentials or override default module values. See Terraform Input Variables for more details."
     required: false
+  output_path:
+    description: "A place to emit the terraform output metadata"
+    required: false
 
 runs:
   using: 'docker'
@@ -37,3 +40,4 @@ runs:
     - ${{ inputs.override_files }}
     - ${{ inputs.delete_on_failure }}
     - ${{ inputs.vars }}
+    - ${{ inputs.output_path }}

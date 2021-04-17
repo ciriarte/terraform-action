@@ -7,6 +7,12 @@ VAR_FILES=$4
 OVERRIDE_FILES=$5
 DELETE_ON_FAILURE=$6
 VARS=$7
+OUTPUT_PATH=$8
+
+if [[ -n $8 ]]; then
+  OUTPUT_PATH=$8
+  mkdir -p "$OUTPUT_PATH"
+fi
 
 tmp_dir=$(mktemp -d)
 
@@ -36,7 +42,7 @@ cat <<JSON
 }
 JSON
 
-/opt/resource/in "$PWD" <<JSON
+/opt/resource/in "$OUTPUT_PATH" <<JSON
 {
   "version": $VERSION,
   "params": {

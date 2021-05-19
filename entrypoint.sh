@@ -19,7 +19,7 @@ tmp_dir=$(mktemp -d)
 # description: allow either directories or files to be specified.
 #   recurse down directories and discover .tf files and pass through
 #   regular files as is.
-# input: json array of files or directories relative to .github
+# input: json array of files or directories relative to the project root
 # output: a json array of the resulting files
 function parse_override_paths() {
   override_input=$1

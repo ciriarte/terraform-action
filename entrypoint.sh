@@ -16,13 +16,35 @@ fi
 
 tmp_dir=$(mktemp -d)
 
+function parse_override_paths() {
+  override_input=$1
+  override_paths=( $(jq '.[]' -r <<< "${override_input}") )
+  override_files=()
+
+  for override_file in ${override_paths[@]}; do
+    if [[ -d $override_file ]]; then
+      while IFS=  read -r -d $'\0'; do
+        override_files+=("$REPLY")
+      done < <(find "${override_file}" -type f -name "*.tf" -print0)
+    elif [[ -f $override_file ]]; then
+      override_files+=("${override_file}")
+    else
+      echo "$override_file is not valid"
+      exit 1
+    fi
+  done
+
+  sorted_unique_override_files=($(echo "${override_files[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
+  printf '%s\n' "${sorted_unique_override_files[@]}" | jq -R . | jq -cs .
+}
+
 /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",
     "terraform_source": "$TERRAFORM_SOURCE",
     "var_files": $VAR_FILES,
-    "override_files": $OVERRIDE_FILES,
+    "override_files": $(parse_override_paths $OVERRIDE_FILES),
     "delete_on_failure": $DELETE_ON_FAILURE,
     "vars": $VARS
   },

@@ -26,15 +26,15 @@ function parse_override_paths() {
   override_paths=( $(jq '.[]' -r <<< "${override_input}") )
   override_files=()
 
-  for override_file in ${override_paths[@]}; do
-    if [[ -d $override_file ]]; then
+  for override_path in ${override_paths[@]}; do
+    if [[ -d $override_path ]]; then
       while IFS=  read -r -d $'\0'; do
         override_files+=("$REPLY")
-      done < <(find "${override_file}" -type f -name "*.tf" -print0)
-    elif [[ -f $override_file ]]; then
-      override_files+=("${override_file}")
+      done < <(find "${override_path}" -type f -name "*.tf" -print0)
+    elif [[ -f $override_path ]]; then
+      override_files+=("${override_path}")
     else
-      echo "$override_file is not valid"
+      echo "$override_path is not valid"
       exit 1
     fi
   done

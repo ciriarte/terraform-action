@@ -1,4 +1,6 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
+
+set -eo pipefail
 
 ENV_NAME=$1
 TERRAFORM_SOURCE=$2

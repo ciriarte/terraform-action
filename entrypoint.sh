@@ -2,8 +2,6 @@
 
 set -eo pipefail
 
-set -eo pipefail
-
 ENV_NAME=$1
 TERRAFORM_SOURCE=$2
 SOURCE=$3

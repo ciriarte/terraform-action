@@ -49,7 +49,7 @@ function parse_override_paths() {
     "env_name": "$ENV_NAME",
     "terraform_source": "$TERRAFORM_SOURCE",
     "var_files": $VAR_FILES,
-    "override_files": $(parse_override_paths $OVERRIDE_FILES),
+    "override_files": $(parse_override_paths "${OVERRIDE_FILES}"),
     "delete_on_failure": $DELETE_ON_FAILURE,
     "vars": $VARS
   },

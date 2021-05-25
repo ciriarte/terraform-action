@@ -18,40 +18,13 @@ fi
 
 tmp_dir=$(mktemp -d)
 
-# description: allow either directories or files to be specified.
-#   recurse down directories and discover .tf files and pass through
-#   regular files as is.
-# input: json array of files or directories relative to the project root
-# output: a json array of the resulting files
-function parse_override_paths() {
-  override_input=$1
-  override_paths=( $(jq '.[]' -r <<< "${override_input}") )
-  override_files=()
-
-  for override_path in ${override_paths[@]}; do
-    if [[ -d $override_path ]]; then
-      while IFS=  read -r -d $'\0'; do
-        override_files+=("$REPLY")
-      done < <(find "${override_path}" -type f -name "*.tf" -print0)
-    elif [[ -f $override_path ]]; then
-      override_files+=("${override_path}")
-    else
-      echo "$override_path is not valid"
-      exit 1
-    fi
-  done
-
-  sorted_unique_override_files=($(echo "${override_files[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
-  printf '%s\n' "${sorted_unique_override_files[@]}" | jq -R . | jq -cs .
-}
-
 /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",
     "terraform_source": "$TERRAFORM_SOURCE",
     "var_files": $VAR_FILES,
-    "override_files": $(parse_override_paths $OVERRIDE_FILES),
+    "override_files": $OVERRIDE_FILES,
     "delete_on_failure": $DELETE_ON_FAILURE,
     "vars": $VARS
   },

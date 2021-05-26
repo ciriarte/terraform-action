@@ -50,6 +50,8 @@ if ! parsed_override_files="$(parse_override_paths "${OVERRIDE_FILES}")"; then
     exit 1
 fi
 
+echo "parsed_override_files: ${parsed_override_files}"
+
 /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
 {
   "params": {
@@ -63,6 +65,18 @@ fi
   "source": $SOURCE
 }
 JSON
+
+cat > "${tmp_dir}/testing" <<JSON
+{
+  "params": {
+    "env_name": "$ENV_NAME",
+    "override_files": ${parsed_override_files},
+    "delete_on_failure": $DELETE_ON_FAILURE,
+  },
+  "source": "***"
+}
+JSON
+cat "${tmp_dir}/testing"
 
 VERSION=$(jq -r .version "${tmp_dir}/check")
 

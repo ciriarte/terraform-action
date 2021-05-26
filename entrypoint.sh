@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+set -eo pipefail
+
 ENV_NAME=$1
 TERRAFORM_SOURCE=$2
 SOURCE=$3
@@ -43,13 +45,18 @@ function parse_override_paths() {
   printf '%s\n' "${sorted_unique_override_files[@]}" | jq -R . | jq -cs .
 }
 
+if ! parsed_override_files="$(parse_override_paths "${OVERRIDE_FILES}")"; then
+    echo "parse_override_paths failed to parse ${OVERRIDE_FILES}. Are the paths correct?"
+    exit 1
+fi
+
 /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",
     "terraform_source": "$TERRAFORM_SOURCE",
     "var_files": $VAR_FILES,
-    "override_files": $(parse_override_paths "${OVERRIDE_FILES}"),
+    "override_files": ${parsed_override_files},
     "delete_on_failure": $DELETE_ON_FAILURE,
     "vars": $VARS
   },

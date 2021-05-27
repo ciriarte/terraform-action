@@ -76,7 +76,6 @@ cat > "${tmp_dir}/testing" <<JSON
   "source": "***"
 }
 JSON
-cat "${tmp_dir}/testing"
 
 VERSION=$(jq -r .version "${tmp_dir}/check")
 

@@ -66,17 +66,6 @@ echo "parsed_override_files: ${parsed_override_files}"
 }
 JSON
 
-cat > "${tmp_dir}/testing" <<JSON
-{
-  "params": {
-    "env_name": "$ENV_NAME",
-    "override_files": ${parsed_override_files},
-    "delete_on_failure": $DELETE_ON_FAILURE,
-  },
-  "source": "***"
-}
-JSON
-
 VERSION=$(jq -r .version "${tmp_dir}/check")
 
 cat <<JSON

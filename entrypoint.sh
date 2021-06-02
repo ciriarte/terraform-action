@@ -52,6 +52,20 @@ fi
 
 echo "parsed_override_files: ${parsed_override_files}"
 
+cat > "${tmp_dir}/out.input" <<JSON
+{
+  "params": {
+    "env_name": "$ENV_NAME",
+    "terraform_source": "$TERRAFORM_SOURCE",
+    "var_files": $VAR_FILES,
+    "override_files": ${parsed_override_files},
+    "delete_on_failure": $DELETE_ON_FAILURE,
+    "vars": $VARS
+  },
+  "source": $SOURCE
+}
+JSON
+
 /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
 {
   "params": {

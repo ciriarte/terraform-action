@@ -82,7 +82,9 @@ JSON
 {
   "version": $VERSION,
   "params": {
-    "env_name": "$ENV_NAME"
+    "env_name": "$ENV_NAME",
+    "var_files": $VAR_FILES,
+    "vars": $VARS
   },
   "source": $SOURCE
 }

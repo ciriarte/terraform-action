@@ -22,9 +22,6 @@ inputs:
   delete_on_failure:
     description: "If true, the resource will run terraform destroy if terraform apply returns an error."
     required: false
-  vars:
-    description: "A collection of Terraform input variables. These are typically used to specify credentials or override default module values. See Terraform Input Variables for more details."
-    required: false
   output_path:
     description: "A place to emit the terraform output metadata"
     required: false
@@ -39,5 +36,4 @@ runs:
     - ${{ inputs.var_files }}
     - ${{ inputs.override_files }}
     - ${{ inputs.delete_on_failure }}
-    - ${{ inputs.vars }}
     - ${{ inputs.output_path }}

@@ -8,10 +8,10 @@ SOURCE=$3
 VAR_FILES=$4
 OVERRIDE_FILES=$5
 DELETE_ON_FAILURE=$6
-OUTPUT_PATH=$8
+OUTPUT_PATH=$7
 
-if [[ -n $8 ]]; then
-  OUTPUT_PATH=$8
+if [[ -n $7 ]]; then
+  OUTPUT_PATH=$7
   mkdir -p "$OUTPUT_PATH"
 fi
 

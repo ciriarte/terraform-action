@@ -9,9 +9,9 @@ VAR_FILES=$4
 OVERRIDE_FILES=$5
 DELETE_ON_FAILURE=$6
 OUTPUT_PATH=$7
+ACTION=$8
 
-if [[ -n $7 ]]; then
-  OUTPUT_PATH=$7
+if [[ -n $OUTPUT_PATH ]]; then
   mkdir -p "$OUTPUT_PATH"
 fi
 
@@ -51,7 +51,35 @@ fi
 
 echo "parsed_override_files: ${parsed_override_files}"
 
-cat > "${tmp_dir}/out.input" <<JSON
+if [[ -n $ACTION ]]; then
+  cat > "${tmp_dir}/out.input" <<JSON
+{
+  "params": {
+    "env_name": "$ENV_NAME",
+    "terraform_source": "$TERRAFORM_SOURCE",
+    "var_files": $VAR_FILES,
+    "override_files": ${parsed_override_files},
+    "delete_on_failure": $DELETE_ON_FAILURE,
+    "action": $ACTION
+  },
+  "source": $SOURCE
+}
+JSON
+  /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
+{
+  "params": {
+    "env_name": "$ENV_NAME",
+    "terraform_source": "$TERRAFORM_SOURCE",
+    "var_files": $VAR_FILES,
+    "override_files": ${parsed_override_files},
+    "delete_on_failure": $DELETE_ON_FAILURE,
+    "action": "$ACTION"
+  },
+  "source": $SOURCE
+}
+JSON
+else
+  cat > "${tmp_dir}/out.input" <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",
@@ -63,8 +91,7 @@ cat > "${tmp_dir}/out.input" <<JSON
   "source": $SOURCE
 }
 JSON
-
-/opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
+  /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",
@@ -76,6 +103,7 @@ JSON
   "source": $SOURCE
 }
 JSON
+fi
 
 VERSION=$(jq -r .version "${tmp_dir}/check")
 

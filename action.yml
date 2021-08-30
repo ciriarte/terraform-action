@@ -25,6 +25,9 @@ inputs:
   output_path:
     description: "A place to emit the terraform output metadata"
     required: false
+  action:
+    description: "If 'destroy', the resource will run terraform destroy."
+    required: false
 
 runs:
   using: 'docker'
@@ -37,3 +40,4 @@ runs:
     - ${{ inputs.override_files }}
     - ${{ inputs.delete_on_failure }}
     - ${{ inputs.output_path }}
+    - ${{ inputs.action }}

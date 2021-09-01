@@ -25,12 +25,12 @@ function retry() {
   do
       if ((attempt_num==max_attempts))
       then
-          echo "Attempt $attempt_num failed and there are no more attempts left!"
+          >&2 echo "Attempt $attempt_num failed and there are no more attempts left!"
           exit 1
       else
           local sleep_time
           sleep_time=$((30 + "${RANDOM}" % 300))
-          echo "Attempt $attempt_num of $max_attempts failed! Trying again in $sleep_time seconds..."
+          >&2 echo "Attempt $attempt_num of $max_attempts failed! Trying again in $sleep_time seconds..."
           attempt_num=$((attempt_num+1))
           sleep $sleep_time
       fi
@@ -85,19 +85,7 @@ if [[ -n $ACTION ]]; then
   "source": $SOURCE
 }
 JSON
-  retry "$RETRY_ATTEMPTS" /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
-{
-  "params": {
-    "env_name": "$ENV_NAME",
-    "terraform_source": "$TERRAFORM_SOURCE",
-    "var_files": $VAR_FILES,
-    "override_files": ${parsed_override_files},
-    "delete_on_failure": $DELETE_ON_FAILURE,
-    "action": "$ACTION"
-  },
-  "source": $SOURCE
-}
-JSON
+  retry "$RETRY_ATTEMPTS" /opt/resource/out "$PWD" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
 else
   cat > "${tmp_dir}/out.input" <<JSON
 {
@@ -111,23 +99,12 @@ else
   "source": $SOURCE
 }
 JSON
-  retry "$RETRY_ATTEMPTS" /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
-{
-  "params": {
-    "env_name": "$ENV_NAME",
-    "terraform_source": "$TERRAFORM_SOURCE",
-    "var_files": $VAR_FILES,
-    "override_files": ${parsed_override_files},
-    "delete_on_failure": $DELETE_ON_FAILURE
-  },
-  "source": $SOURCE
-}
-JSON
+  retry "$RETRY_ATTEMPTS" /opt/resource/out "$PWD" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
 fi
 
 VERSION=$(jq -r .version "${tmp_dir}/check")
 
-cat <<JSON
+cat > "${tmp_dir}/in.input" <<JSON
 {
   "version": $VERSION,
   "params": {
@@ -137,13 +114,4 @@ cat <<JSON
 }
 JSON
 
-/opt/resource/in "$OUTPUT_PATH" <<JSON
-{
-  "version": $VERSION,
-  "params": {
-    "env_name": "$ENV_NAME",
-    "var_files": $VAR_FILES
-  },
-  "source": $SOURCE
-}
-JSON
+/opt/resource/in "$OUTPUT_PATH" < "${tmp_dir}/in.input"

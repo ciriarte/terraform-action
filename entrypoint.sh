@@ -10,12 +10,32 @@ OVERRIDE_FILES=$5
 DELETE_ON_FAILURE=$6
 OUTPUT_PATH=$7
 ACTION=$8
+RETRY_ATTEMPTS=$9
 
 if [[ -n $OUTPUT_PATH ]]; then
   mkdir -p "$OUTPUT_PATH"
 fi
 
 tmp_dir=$(mktemp -d)
+
+function retry() {
+  local -r -i max_attempts="$1"; shift
+  local -i attempt_num=1
+  until "$@"
+  do
+      if ((attempt_num==max_attempts))
+      then
+          echo "Attempt $attempt_num failed and there are no more attempts left!"
+          exit 1
+      else
+          local sleep_time
+          sleep_time=$((30 + "${RANDOM}" % 300))
+          echo "Attempt $attempt_num of $max_attempts failed! Trying again in $sleep_time seconds..."
+          attempt_num=$((attempt_num+1))
+          sleep $sleep_time
+      fi
+  done
+}
 
 # description: allow either directories or files to be specified.
 #   recurse down directories and discover .tf files and pass through
@@ -65,7 +85,7 @@ if [[ -n $ACTION ]]; then
   "source": $SOURCE
 }
 JSON
-  /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
+  retry "$RETRY_ATTEMPTS" /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",
@@ -91,7 +111,7 @@ else
   "source": $SOURCE
 }
 JSON
-  /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
+  retry "$RETRY_ATTEMPTS" /opt/resource/out "$PWD" > "${tmp_dir}/check" <<JSON
 {
   "params": {
     "env_name": "$ENV_NAME",

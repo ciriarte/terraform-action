@@ -28,6 +28,10 @@ inputs:
   action:
     description: "If 'destroy', the resource will run terraform destroy."
     required: false
+  retry:
+    description: "Retry attempts"
+    required: false
+    default: "1"
 
 runs:
   using: 'docker'
@@ -41,3 +45,4 @@ runs:
     - ${{ inputs.delete_on_failure }}
     - ${{ inputs.output_path }}
     - ${{ inputs.action }}
+    - ${{ inputs.retry }}

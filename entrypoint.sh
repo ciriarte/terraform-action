@@ -73,6 +73,10 @@ function main() {
 
 tmp_dir=$(mktemp -d)
 
+for override_file in $(jq -r .[] <<< "${parsed_override_files}"); do
+  rm -rf "${PWD:?}/$TERRAFORM_SOURCE/$(basename "${override_file}")"
+done
+
 if [[ -n $ACTION ]]; then
   cat > "${tmp_dir}/out.input" <<JSON
 {

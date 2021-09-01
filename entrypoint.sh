@@ -16,8 +16,6 @@ if [[ -n $OUTPUT_PATH ]]; then
   mkdir -p "$OUTPUT_PATH"
 fi
 
-tmp_dir=$(mktemp -d)
-
 function retry() {
   local -r -i max_attempts="$1"; shift
   local -i attempt_num=1
@@ -71,6 +69,10 @@ fi
 
 echo "parsed_override_files: ${parsed_override_files}"
 
+function main() {
+
+tmp_dir=$(mktemp -d)
+
 if [[ -n $ACTION ]]; then
   cat > "${tmp_dir}/out.input" <<JSON
 {
@@ -85,7 +87,7 @@ if [[ -n $ACTION ]]; then
   "source": $SOURCE
 }
 JSON
-  retry "$RETRY_ATTEMPTS" /opt/resource/out "$PWD" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
+  /opt/resource/out "$PWD" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
 else
   cat > "${tmp_dir}/out.input" <<JSON
 {
@@ -99,7 +101,7 @@ else
   "source": $SOURCE
 }
 JSON
-  retry "$RETRY_ATTEMPTS" /opt/resource/out "$PWD" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
+  /opt/resource/out "$PWD" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
 fi
 
 VERSION=$(jq -r .version "${tmp_dir}/check")
@@ -115,3 +117,7 @@ cat > "${tmp_dir}/in.input" <<JSON
 JSON
 
 /opt/resource/in "$OUTPUT_PATH" < "${tmp_dir}/in.input"
+
+}
+
+retry "$RETRY_ATTEMPTS" main

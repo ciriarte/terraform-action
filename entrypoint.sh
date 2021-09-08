@@ -51,7 +51,7 @@ fi
 
 echo "parsed_override_files: ${parsed_override_files}"
 
-if [[ -n $ACTION ]]; then
+if [ $ACTION = "destroy" ]; then
   cat > "${tmp_dir}/out.input" <<JSON
 {
   "params": {
@@ -60,7 +60,7 @@ if [[ -n $ACTION ]]; then
     "var_files": $VAR_FILES,
     "override_files": ${parsed_override_files},
     "delete_on_failure": $DELETE_ON_FAILURE,
-    "action": $ACTION
+    "action": "destroy"
   },
   "source": $SOURCE
 }
@@ -73,7 +73,21 @@ JSON
     "var_files": $VAR_FILES,
     "override_files": ${parsed_override_files},
     "delete_on_failure": $DELETE_ON_FAILURE,
-    "action": "$ACTION"
+    "action": "destroy"
+  },
+  "source": $SOURCE
+}
+JSON
+
+  version=$(jq -r .version "${tmp_dir}/check")
+
+  /opt/resource/in "$OUTPUT_PATH" <<JSON
+{
+  "version": $version,
+  "params": {
+    "env_name": "$ENV_NAME",
+    "var_files": $VAR_FILES,
+    "action": "destroy"
   },
   "source": $SOURCE
 }
@@ -103,26 +117,26 @@ JSON
   "source": $SOURCE
 }
 JSON
-fi
 
-VERSION=$(jq -r .version "${tmp_dir}/check")
+  version=$(jq -r .version "${tmp_dir}/check")
 
-cat <<JSON
+  /opt/resource/in "$OUTPUT_PATH" <<JSON
 {
-  "version": $VERSION,
+  "version": $version,
   "params": {
-    "env_name": "$ENV_NAME"
+    "env_name": "$ENV_NAME",
+    "var_files": $VAR_FILES
   },
   "source": $SOURCE
 }
 JSON
+fi
 
-/opt/resource/in "$OUTPUT_PATH" <<JSON
+cat <<JSON
 {
-  "version": $VERSION,
+  "version": $version,
   "params": {
-    "env_name": "$ENV_NAME",
-    "var_files": $VAR_FILES
+    "env_name": "$ENV_NAME"
   },
   "source": $SOURCE
 }

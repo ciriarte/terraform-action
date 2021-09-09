@@ -76,12 +76,16 @@ tmp_dir=$(mktemp -d)
 
 mapfile -t < <(jq -r .[] <<< "${VAR_FILES}")
 for f in "${MAPFILE[@]}"; do
-  cp "$f" "$tmp_workdir"
+  local file_path
+  file_path="$(dirname "$f")"
+  cp "$f" "$tmp_workdir/$file_path"
 done
 
 mapfile -t < <(jq -r .[] <<< "${parsed_override_files}")
 for f in "${MAPFILE[@]}"; do
-  cp "$f" "$tmp_workdir"
+  local file_path
+  file_path="$(dirname "$f")"
+  cp "$f" "$tmp_workdir/$file_path"
 done
 
 cp -R "$TERRAFORM_SOURCE" "${tmp_workdir}"

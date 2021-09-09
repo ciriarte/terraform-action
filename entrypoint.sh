@@ -70,6 +70,10 @@ fi
 echo "parsed_override_files: ${parsed_override_files}"
 
 function main() {
+local cwd
+cwd="$1"
+
+cd "$cwd"
 
 tmp_workdir=$(mktemp -d)
 tmp_dir=$(mktemp -d)
@@ -90,10 +94,12 @@ for f in "${MAPFILE[@]}"; do
   cp "$f" "$tmp_workdir/$subpath"
 done
 
+mkdir -p "$(dirname "$TERRAFORM_SOURCE")"
 cp -R "$TERRAFORM_SOURCE" "${tmp_workdir}"
 
 ls "${tmp_workdir}"
 
+cd "${tmp_workdir}" > /dev/null
 if [[ -n $ACTION ]]; then
   cat > "${tmp_dir}/out.input" <<JSON
 {
@@ -108,7 +114,7 @@ if [[ -n $ACTION ]]; then
   "source": $SOURCE
 }
 JSON
-  /opt/resource/out "${tmp_workdir}" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
+  /opt/resource/out "${PWD}" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
 else
   cat > "${tmp_dir}/out.input" <<JSON
 {
@@ -122,7 +128,7 @@ else
   "source": $SOURCE
 }
 JSON
-  /opt/resource/out "${tmp_workdir}" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
+  /opt/resource/out "${PWD}" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
 fi
 
 VERSION=$(jq -r .version "${tmp_dir}/check")
@@ -141,4 +147,4 @@ JSON
 
 }
 
-retry "$RETRY_ATTEMPTS" main
+retry "$RETRY_ATTEMPTS" main "${PWD}"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+set -eox pipefail
 
 ENV_NAME=$1
 TERRAFORM_SOURCE=$2
@@ -85,6 +85,8 @@ for f in "${MAPFILE[@]}"; do
 done
 
 cp -R "$TERRAFORM_SOURCE" "${tmp_workdir}"
+
+ls "${tmp_workdir}"
 
 if [[ -n $ACTION ]]; then
   cat > "${tmp_dir}/out.input" <<JSON

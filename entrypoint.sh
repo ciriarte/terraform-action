@@ -45,7 +45,7 @@ function parse_override_paths() {
   override_paths=( $(jq '.[]' -r <<< "${override_input}") )
   override_files=()
 
-  for override_path in ${override_paths[@]}; do
+  for override_path in "${override_paths[@]}"; do
     if [[ -d $override_path ]]; then
       while IFS=  read -r -d $'\0'; do
         override_files+=("$REPLY")
@@ -71,11 +71,10 @@ echo "parsed_override_files: ${parsed_override_files}"
 
 function main() {
 
+tmp_workdir=$(mktemp -d)
 tmp_dir=$(mktemp -d)
 
-for override_file in $(jq -r .[] <<< "${parsed_override_files}"); do
-  rm -rf "${PWD:?}/$TERRAFORM_SOURCE/$(basename "${override_file}")"
-done
+cp -R "$TERRAFORM_SOURCE" "${tmp_workdir}"
 
 if [[ -n $ACTION ]]; then
   cat > "${tmp_dir}/out.input" <<JSON
@@ -91,7 +90,7 @@ if [[ -n $ACTION ]]; then
   "source": $SOURCE
 }
 JSON
-  /opt/resource/out "$PWD" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
+  /opt/resource/out "${tmp_workdir}" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
 else
   cat > "${tmp_dir}/out.input" <<JSON
 {
@@ -105,7 +104,7 @@ else
   "source": $SOURCE
 }
 JSON
-  /opt/resource/out "$PWD" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
+  /opt/resource/out "${tmp_workdir}" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
 fi
 
 VERSION=$(jq -r .version "${tmp_dir}/check")

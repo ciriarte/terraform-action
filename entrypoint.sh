@@ -98,8 +98,6 @@ local root_path
 root_path=$(cut -d'/' -f1 <<< "$TERRAFORM_SOURCE")
 cp -R "$root_path" "${tmp_workdir}"
 
-ls -R "${tmp_workdir}"
-
 cd "${tmp_workdir}" > /dev/null
 if [[ -n $ACTION ]]; then
   cat > "${tmp_dir}/out.input" <<JSON

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eox pipefail
+set -eo pipefail
 
 ENV_NAME=$1
 TERRAFORM_SOURCE=$2
@@ -144,7 +144,7 @@ cat > "${tmp_dir}/in.input" <<JSON
 }
 JSON
 
-/opt/resource/in "$OUTPUT_PATH" < "${tmp_dir}/in.input"
+/opt/resource/in "$cwd/$OUTPUT_PATH" < "${tmp_dir}/in.input"
 
 }
 

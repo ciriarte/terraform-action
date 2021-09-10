@@ -94,7 +94,7 @@ for f in "${MAPFILE[@]}"; do
   cp "$f" "$tmp_workdir/$subpath"
 done
 
-mkdir -p "$(dirname "$TERRAFORM_SOURCE")"
+mkdir -p "${tmp_workdir}/$(dirname "$TERRAFORM_SOURCE")"
 cp -R "$TERRAFORM_SOURCE" "${tmp_workdir}"
 
 ls "${tmp_workdir}"

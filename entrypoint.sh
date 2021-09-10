@@ -97,7 +97,7 @@ done
 mkdir -p "${tmp_workdir}/$(dirname "$TERRAFORM_SOURCE")"
 cp -R "$TERRAFORM_SOURCE" "${tmp_workdir}/$(dirname "$TERRAFORM_SOURCE")"
 
-ls "${tmp_workdir}"
+ls -R "${tmp_workdir}"
 
 cd "${tmp_workdir}" > /dev/null
 if [[ -n $ACTION ]]; then

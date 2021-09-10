@@ -95,7 +95,7 @@ for f in "${MAPFILE[@]}"; do
 done
 
 local root_path
-root_path=$(cut -d'/' -f1 "$TERRAFORM_SOURCE")
+root_path=$(cut -d'/' -f1 <<< "$TERRAFORM_SOURCE")
 cp -R "$root_path" "${tmp_workdir}"
 
 ls -R "${tmp_workdir}"

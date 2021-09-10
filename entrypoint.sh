@@ -95,7 +95,7 @@ for f in "${MAPFILE[@]}"; do
 done
 
 mkdir -p "${tmp_workdir}/$(dirname "$TERRAFORM_SOURCE")"
-cp -R "$TERRAFORM_SOURCE" "${tmp_workdir}"
+cp -R "$TERRAFORM_SOURCE" "${tmp_workdir}/$(dirname "$TERRAFORM_SOURCE")"
 
 ls "${tmp_workdir}"
 

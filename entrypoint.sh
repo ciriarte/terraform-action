@@ -94,8 +94,9 @@ for f in "${MAPFILE[@]}"; do
   cp "$f" "$tmp_workdir/$subpath"
 done
 
-mkdir -p "${tmp_workdir}/$(dirname "$TERRAFORM_SOURCE")"
-cp -R "$TERRAFORM_SOURCE" "${tmp_workdir}/$(dirname "$TERRAFORM_SOURCE")"
+local root_path
+root_path=$(cut -d'/' -f1 "$TERRAFORM_SOURCE")
+cp -R "$root_path" "${tmp_workdir}"
 
 ls -R "${tmp_workdir}"
 

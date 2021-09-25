@@ -35,7 +35,7 @@ inputs:
 
 runs:
   using: 'docker'
-  image: ghcr.io/ciriarte/terraforming-action
+  image: docker://ghcr.io/ciriarte/terraforming-action
   args:
     - ${{ inputs.env_name }}
     - ${{ inputs.terraform_source }}

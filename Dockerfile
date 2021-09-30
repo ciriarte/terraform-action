@@ -1,4 +1,4 @@
-FROM ljfranklin/terraform-resource:0.11.14
+FROM ljfranklin/terraform-resource:0.12.29
 
 RUN apk update && \
     apk add \

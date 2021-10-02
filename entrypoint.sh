@@ -26,7 +26,7 @@ function retry() {
       if ((attempt_num==max_attempts))
       then
           >&2 echo "Attempt $attempt_num failed and there are no more attempts left!"
-          echo "::endgroup::"
+          >&2 echo "::endgroup::"
           exit 1
       else
           local sleep_time
@@ -34,8 +34,8 @@ function retry() {
           >&2 echo "Attempt $attempt_num of $max_attempts failed! Trying again in $sleep_time seconds..."
           attempt_num=$((attempt_num+1))
           sleep $sleep_time
-          echo "::endgroup::"
-          echo "::group::Attempt $attempt_num"
+          >&2 echo "::endgroup::"
+          >&2 echo "::group::Attempt $attempt_num"
       fi
   done
 }

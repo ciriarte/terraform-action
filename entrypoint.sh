@@ -2,6 +2,8 @@
 
 set -eo pipefail
 
+exec 2>&1
+
 ENV_NAME=$1
 TERRAFORM_SOURCE=$2
 SOURCE=$3
@@ -20,22 +22,22 @@ function retry() {
   local -r -i max_attempts="$1"; shift
   local -i attempt_num=1
 
-  >&2 echo "::group::Attempt $attempt_num"
+  echo "::group::Attempt $attempt_num"
   until "$@"
   do
       if ((attempt_num==max_attempts))
       then
-          >&2 echo "Attempt $attempt_num failed and there are no more attempts left!"
-          >&2 echo "::endgroup::"
+          echo "Attempt $attempt_num failed and there are no more attempts left!"
+          echo "::endgroup::"
           exit 1
       else
           local sleep_time
           sleep_time=$((30 + "${RANDOM}" % 300))
-          >&2 echo "Attempt $attempt_num of $max_attempts failed! Trying again in $sleep_time seconds..."
+          echo "Attempt $attempt_num of $max_attempts failed! Trying again in $sleep_time seconds..."
           attempt_num=$((attempt_num+1))
           sleep $sleep_time
-          >&2 echo "::endgroup::"
-          >&2 echo "::group::Attempt $attempt_num"
+          echo "::endgroup::"
+          echo "::group::Attempt $attempt_num"
       fi
   done
 }
@@ -135,7 +137,7 @@ JSON
   /opt/resource/out "${PWD}" > "${tmp_dir}/check" < "${tmp_dir}/out.input"
 fi
 
-VERSION=$(jq -r .version "${tmp_dir}/check")
+VERSION=$(jq -e -r .version "${tmp_dir}/check")
 
 cat > "${tmp_dir}/in.input" <<JSON
 {
